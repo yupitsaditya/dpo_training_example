@@ -24,8 +24,8 @@ conda create -n dpo_env python=3.10 -y
 conda activate dpo_env
 
 # 3. Install EVERYTHING natively via pip
-# We use --index-url for PyTorch and --extra-index-url for PyPI to guarantee the CUDA 12.4 wheel is chosen!
-pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cu124 --extra-index-url https://pypi.org/simple
+# We use --index-url for PyTorch and --extra-index-url for PyPI to guarantee the CUDA 12.8 wheel is chosen!
+pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cu128 --extra-index-url https://pypi.org/simple
 ```
 
 ## How to Run
