@@ -12,10 +12,13 @@
 
 MODEL_NAME="google/gemma-4-31b-it"
 
-echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on 8 GPUs"
+export CUDA_VISIBLE_DEVICES="1,2,3,4,5,6,7"
+TENSOR_PARALLEL_SIZE=7
+
+echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on GPUs: $CUDA_VISIBLE_DEVICES"
 
 vllm serve $MODEL_NAME \
-    --tensor-parallel-size 8 \
+    --tensor-parallel-size $TENSOR_PARALLEL_SIZE \
     --host 0.0.0.0 \
     --port 8000 \
     --dtype auto \

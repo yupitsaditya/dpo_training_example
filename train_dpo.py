@@ -1,4 +1,7 @@
 import os
+# Restrict to GPUs 1 to 7 since node 0 is in use
+os.environ["CUDA_VISIBLE_DEVICES"] = "1,2,3,4,5,6,7"
+
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 from peft import LoraConfig, prepare_model_for_kbit_training
