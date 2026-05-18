@@ -8,7 +8,7 @@ from datasets import load_dataset
 # ==========================================
 # HYPERPARAMETERS & VARIABLES
 # ==========================================
-MODEL_ID = "Qwen/Qwen3.6-Coder-32B-Instruct"
+MODEL_ID = "google/gemma-4-31b-it"
 DATASET_PATH = "dpo_dataset.jsonl"
 OUTPUT_DIR = "./orpo_results"
 

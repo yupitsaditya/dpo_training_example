@@ -13,7 +13,7 @@ OUTPUT_FILE = "dpo_dataset.jsonl"
 API_BASE = "http://localhost:8000/v1"
 # For vLLM using the OpenAI spec, the model name used by litellm must match 
 # exactly what is hosted (or prefix with openai/ for litellm)
-MODEL_NAME = "openai/Qwen/Qwen3.6-Coder-32B-Instruct"
+MODEL_NAME = "openai/google/gemma-4-31b-it"
 
 CONCURRENCY_LIMIT = 32  # Controls how many parallel requests hit the server
 

@@ -7,10 +7,10 @@
 #
 # Requirements: pip install vllm
 #
-# Using a state-of-the-art Coder model provides much better code-understanding to generate hard negatives.
-# Qwen3.6-Coder will run very fast and comfortably across 8 GPUs using tensor parallelism.
+# Using a state-of-the-art reasoning model provides much better code-understanding to generate hard negatives.
+# Gemma-4-31B will run very fast and comfortably across 8 GPUs using tensor parallelism.
 
-MODEL_NAME="Qwen/Qwen3.6-Coder-32B-Instruct"
+MODEL_NAME="google/gemma-4-31b-it"
 
 echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on 8 GPUs"
 
@@ -20,4 +20,6 @@ vllm serve $MODEL_NAME \
     --port 8000 \
     --dtype auto \
     --gpu-memory-utilization 0.90 \
-    --max-model-len 4096
+    --max-model-len 4096 \
+    --enable-reasoning \
+    --reasoning-parser gemma4
