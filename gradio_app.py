@@ -40,38 +40,43 @@ async def chat_stream(message, history):
         # extra_body={"chat_template_kwargs": {"thinking": True}}
     )
 
-    reasoning_text = ""
-    content_text = ""
+    api_reasoning = ""
+    raw_content = ""
     
     # We will yield the combined Markdown string iteratively to Gradio
     async for chunk in stream:
         delta = chunk.choices[0].delta
         
         # In modern vLLM/OpenAI specs, the reasoning tokens are sent in a separate field.
-        # We use getattr or dict access to safely handle it depending on the exact SDK version.
         delta_dict = delta.model_dump()
-        
-        # Extract reasoning tokens (vLLM usually sends this in `reasoning` or `reasoning_content`)
         chunk_reasoning = delta_dict.get("reasoning", "") or delta_dict.get("reasoning_content", "")
         if not chunk_reasoning and hasattr(delta, 'reasoning'):
             chunk_reasoning = getattr(delta, 'reasoning') or ""
             
         if chunk_reasoning:
-            reasoning_text += chunk_reasoning
+            api_reasoning += chunk_reasoning
             
         # Extract normal content tokens
         chunk_content = delta.content or ""
         if chunk_content:
-            content_text += chunk_content
+            raw_content += chunk_content
             
-        # Construct the UI string
-        # We put the reasoning inside a native HTML/Markdown <details> block so the user can expand/collapse it.
         display_text = ""
-        if reasoning_text:
-            display_text += f"<details open><summary><b>🧠 Gemma's Thinking Process</b></summary>\n\n> {reasoning_text.replace(chr(10), chr(10) + '> ')}\n\n</details>\n\n---\n\n"
+        
+        # 1. Handle API-native reasoning if present
+        if api_reasoning:
+            display_text += f"<details open><summary><b>🧠 Gemma's Thinking Process</b></summary>\n\n> {api_reasoning.replace(chr(10), chr(10) + '> ')}\n\n</details>\n\n---\n\n"
+            display_text += raw_content
             
-        if content_text:
-            display_text += content_text
+        # 2. Handle Text-based <think> fallback if API-native reasoning is absent (older vLLM versions)
+        elif "<think>" in raw_content:
+            parts = raw_content.split("</think>")
+            thinking_content = parts[0].split("<think>")[-1]
+            display_text += f"<details open><summary><b>🧠 Gemma's Thinking Process</b></summary>\n\n> {thinking_content.replace(chr(10), chr(10) + '> ')}\n\n</details>\n\n---\n\n"
+            if len(parts) > 1:
+                display_text += parts[1]
+        else:
+            display_text += raw_content
             
         if display_text:
             yield display_text

@@ -23,6 +23,4 @@ vllm serve $MODEL_NAME \
     --port 8000 \
     --dtype auto \
     --gpu-memory-utilization 0.90 \
-    --max-model-len 4096 \
-    --enable-reasoning \
-    --reasoning-parser gemma4
+    --max-model-len 4096
