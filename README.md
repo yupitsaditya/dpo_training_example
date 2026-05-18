@@ -23,8 +23,11 @@ conda create -n dpo_env python=3.10 -y
 # 2. Activate the environment
 conda activate dpo_env
 
-# 3. Install the requirements and PyTorch (using the cu124 extra index to match your CUDA 12.8 driver)
-pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu124
+# 3. Install PyTorch using Conda (this guarantees the correct CUDA bindings on Windows!)
+conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia -y
+
+# 4. Install the rest of the pipeline dependencies
+pip install -r requirements.txt
 ```
 
 ## How to Run
