@@ -23,11 +23,8 @@ conda create -n dpo_env python=3.10 -y
 # 2. Activate the environment
 conda activate dpo_env
 
-# 3. Install PyTorch (adjust the CUDA version to match your system, e.g., cu121 or cu124)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-
-# 4. Install the requirements (ensures Gemma 4, DPO, and ORPO support)
-pip install -r requirements.txt
+# 3. Install the requirements and PyTorch (using the cu124 extra index to match your CUDA 12.8 driver)
+pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu124
 ```
 
 ## How to Run
