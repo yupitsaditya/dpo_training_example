@@ -12,15 +12,17 @@
 
 MODEL_NAME="google/gemma-4-31b-it"
 
-# Drop to 4 GPUs to ensure Tensor Parallel Size is a power of 2.
-# Prime numbers like 7 cause vLLM's C++ PagedAttention kernels to segfault due to uneven head division!
-export CUDA_VISIBLE_DEVICES="1,2,3,4"
-TENSOR_PARALLEL_SIZE=4
+# On Windows Native, multi-GPU NCCL is not supported and causes unavoidable segfaults.
+# We bypass this completely by running on a SINGLE GPU using 4-bit quantization!
+export CUDA_VISIBLE_DEVICES="1"
+TENSOR_PARALLEL_SIZE=1
 
-echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on GPUs: $CUDA_VISIBLE_DEVICES"
+echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on GPU: $CUDA_VISIBLE_DEVICES"
 
 vllm serve $MODEL_NAME \
     --tensor-parallel-size $TENSOR_PARALLEL_SIZE \
+    --quantization bitsandbytes \
+    --load-format bitsandbytes \
     --host 0.0.0.0 \
     --port 8000 \
     --dtype auto \
