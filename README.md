@@ -23,11 +23,8 @@ conda create -n dpo_env python=3.10 -y
 # 2. Activate the environment
 conda activate dpo_env
 
-# 3. Install PyTorch using Conda (this guarantees the correct CUDA bindings on Windows!)
-conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia -y
-
-# 4. Install the rest of the pipeline dependencies
-# We strictly pass the cu124 index here so if pip decides to reinstall torch, it pulls the safe 12.4 version!
+# 3. Install EVERYTHING in one go via pip
+# The extra-index-url forces vLLM's strict PyTorch requirement to be fulfilled by the CUDA 12.4 compatible version natively.
 pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu124
 ```
 
