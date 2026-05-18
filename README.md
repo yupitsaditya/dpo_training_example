@@ -27,7 +27,8 @@ conda activate dpo_env
 conda install pytorch torchvision torchaudio pytorch-cuda=12.4 -c pytorch -c nvidia -y
 
 # 4. Install the rest of the pipeline dependencies
-pip install -r requirements.txt
+# We strictly pass the cu124 index here so if pip decides to reinstall torch, it pulls the safe 12.4 version!
+pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu124
 ```
 
 ## How to Run
