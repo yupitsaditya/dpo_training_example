@@ -12,8 +12,10 @@
 
 MODEL_NAME="google/gemma-4-31b-it"
 
-export CUDA_VISIBLE_DEVICES="1,2,3,4,5,6,7"
-TENSOR_PARALLEL_SIZE=7
+# Drop to 4 GPUs to ensure Tensor Parallel Size is a power of 2.
+# Prime numbers like 7 cause vLLM's C++ PagedAttention kernels to segfault due to uneven head division!
+export CUDA_VISIBLE_DEVICES="1,2,3,4"
+TENSOR_PARALLEL_SIZE=4
 
 echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on GPUs: $CUDA_VISIBLE_DEVICES"
 
