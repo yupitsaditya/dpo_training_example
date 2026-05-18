@@ -12,17 +12,17 @@
 
 MODEL_NAME="google/gemma-4-31b-it"
 
-# On Windows Native, multi-GPU NCCL is not supported and causes unavoidable segfaults.
-# We bypass this completely by running on a SINGLE GPU using 4-bit quantization!
-export CUDA_VISIBLE_DEVICES="1"
-TENSOR_PARALLEL_SIZE=1
+# Fix Linux multi-GPU segfaults when crossing PCIe/NUMA boundaries (e.g. GPUs 4-7)
+export NCCL_P2P_DISABLE=1
+export NCCL_IB_DISABLE=1
 
-echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on GPU: $CUDA_VISIBLE_DEVICES"
+export CUDA_VISIBLE_DEVICES="4,5,6,7"
+TENSOR_PARALLEL_SIZE=4
+
+echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on GPUs: $CUDA_VISIBLE_DEVICES"
 
 vllm serve $MODEL_NAME \
     --tensor-parallel-size $TENSOR_PARALLEL_SIZE \
-    --quantization bitsandbytes \
-    --load-format bitsandbytes \
     --host 0.0.0.0 \
     --port 8000 \
     --dtype auto \
