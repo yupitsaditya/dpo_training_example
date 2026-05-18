@@ -23,9 +23,9 @@ conda create -n dpo_env python=3.10 -y
 # 2. Activate the environment
 conda activate dpo_env
 
-# 3. Install EVERYTHING in one go via pip
-# The extra-index-url forces vLLM's strict PyTorch requirement to be fulfilled by the CUDA 12.4 compatible version natively.
-pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu124
+# 3. Install EVERYTHING natively via pip
+# We use --index-url for PyTorch and --extra-index-url for PyPI to guarantee the CUDA 12.4 wheel is chosen!
+pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cu124 --extra-index-url https://pypi.org/simple
 ```
 
 ## How to Run
