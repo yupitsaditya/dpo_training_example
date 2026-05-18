@@ -7,10 +7,10 @@
 #
 # Requirements: pip install vllm
 #
-# Using a 70B model provides much better code-understanding to generate hard negatives.
-# Llama-3-70B-Instruct will run very fast and comfortably across 8 GPUs using tensor parallelism.
+# Using a state-of-the-art Coder model provides much better code-understanding to generate hard negatives.
+# Qwen3.6-Coder will run very fast and comfortably across 8 GPUs using tensor parallelism.
 
-MODEL_NAME="meta-llama/Meta-Llama-3-70B-Instruct"
+MODEL_NAME="Qwen/Qwen3.6-Coder-32B-Instruct"
 
 echo "Starting vLLM OpenAI API Server with model: $MODEL_NAME on 8 GPUs"
 
